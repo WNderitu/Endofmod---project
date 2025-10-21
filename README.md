@@ -120,11 +120,10 @@ Box plots by month to visualize seasonal variations and outliers
 
 **1. Rain (mm) - Highly Seasonal & Sparse**
 - Monsoon months (Jun-Sep): Heavy rainfall with many outliers. Dry months (Oct-May): Mostly 0 mm (boxes are flat)
-- **Action: Create binary feature is_monsoon and consider zero-inflated models or separate rain/no-rain classification**
 
 **2. Temperature - Clear Seasonal Cycles**
 - Hottest: April-May (pre-monsoon summer). Coolest: December-January (winter). Min Temp range: 14-30°C, Max Temp: 24-43°C
-- **Strong seasonal pattern = good for time-based features**
+- **Strong seasonal pattern 
 
 **3. Humidity - Monsoon Effect**
 - Max Humidity: Consistently high (80-100%) across months. 
@@ -134,15 +133,79 @@ Box plots by month to visualize seasonal variations and outliers
 **4. Wind Speed Issues**
 - **Min Wind Speed:**
   - Nearly all months show 0 km/h median with extreme outliers, all months.
-  - **Recommendation: Drop feature - it has almost no variance and will not help predictions**
-- **Max Wind Speed:**
+ - **Max Wind Speed:**
   - July spike is dramatic (15-47 km/h median, up to 70 km/h). 
   - Monsoon wind storms clearly visible. 
   - **Many outliers - alot in August. Other months - June, September, November, December**
 
+Correlation Analysis
+
+<img width="711" height="590" alt="image" src="https://github.com/user-attachments/assets/2e24915e-2cb9-4375-95cf-51d62fad52ae" />
+
+**Strong correlations**
+- **Max Humidity vs. Min Humidity (0.69)** - strong positive correlation. Days with high peak humidity also tend to have higher minimum humidity. Suggests consistent moisture levels across the day—possibly during monsoon or humid seasons.
+- **Max Temp vs. Min Humidity (-0.66)** - strong negative correlation. As daytime temperatures rise, the minimum humidity tends to drop. This reflects typical diurnal drying—hotter air holds more moisture, lowering relative humidity unless moisture increases
+- **Max Humidity vs. Max Temperature (-0.52)** - moderate negative correlation: As peak humidity increases, peak temperatures reduce. 
+  
+**Weak correlations**
+- Min Temp vs. Rain (-0.04) - weak negative correlation
+- Min Humidity vs. min Temp (0.06) - weak positive correlation
 ## Time Series Exploratory analysis
 ETS decomposition was done on the various time series variables to detect trends, seasonality and residual. 
 A correlation matrix for the numerical features was computed to check for multicollinearity.  
+
+Line Plots
+
+<img width="1487" height="590" alt="image" src="https://github.com/user-attachments/assets/c161ca6e-ac22-44e6-8f82-94a8a806025d" />
+
+**Daily Rainfall Trends - Amberpet Mandal (Jan 2023– Feb 2025)**
+
+Seasonal Rainfall Patterns:
+- Monsoon Peaks - significant spikes in rainfall occur during the monsoon months (June to September) in both 2023 and 2024.These peaks are consistent with the monsoon season in Telangana, which typically brings heavy rainfall.
+- Dry Periods - minimal or no rainfall is observed during the dry months (October to May), reflecting the semi-arid climate of the region.
+Rainfall Intensity:
+- Heavy Rainfall Events - some days experience rainfall exceeding 70 mm, indicating intense rainstorms during the monsoon.
+- Low Rainfall Days - most days have little to no rainfall, as shown by the flat sections of the graph.
+Yearly Trends:
+- The rainfall pattern is consistent across 2023 and 2024, with similar monsoon peaks and dry periods.
+- This highlights the predictable nature of rainfall in Amberpet Mandal, driven by the region's climate.
+
+<img width="1487" height="590" alt="image" src="https://github.com/user-attachments/assets/8d794146-1fb0-4bfb-8587-fd947d45aa40" />
+
+**Temperature Trends – Amberpet Mandal (Jan 2023– Feb 2025)**
+- The chart illustrates the daily minimum and maximum temperature trends in Amberpet Mandal from January 2023 to Feb 2025.
+- The data shows **clear seasonal patterns,** with temperatures peaking between April and June each year (maximums often above 40°C) and reaching their lowest between December and January (minimums around 15–18°C). 
+- The **gap between daily highs and lows widens during summer months**, indicating hot days and warm nights, while **winter months show smaller differences**, reflecting cooler days and cold nights. 
+- Overall, the **temperature pattern remains consistent over the two-year period,** highlighting the region’s tropical climate characterized by hot summers, mild monsoons, and cool winters.
+
+<img width="1487" height="590" alt="image" src="https://github.com/user-attachments/assets/f777da93-7b3c-4f5d-84eb-8eb28583368a" />
+
+**Humidity Trends - Amberpet Mandal (Jan 2023– Feb 2025)**
+- The analysis of minimum and maximum humidity levels from January 2023 to February 2025 shows a clear seasonal humidity cycle typical of a monsoon-influenced climate. 
+- Maximum humidity consistently remains high (70–100%) throughout the year, peaking during the monsoon months (June–October), when the air is nearly saturated with moisture. 
+- Minimum humidity values display strong variation, dropping as low as 10–20% during the pre-monsoon dry season (March–May), reflecting hot and arid daytime conditions.
+- The large gap between minimum and maximum humidity outside the monsoon period indicates significant diurnal variation, driven by daytime heating and nighttime cooling. Conversely, this gap narrows during the monsoon, showing persistently moist air
+- Overall, these trends highlight a predictable humidity pattern - **strong annual humidity cycle**
+
+<img width="1487" height="590" alt="image" src="https://github.com/user-attachments/assets/d52ccf60-4b2a-4620-aeb8-2a8282e6304a" />
+
+**Wind Speed Trends - Amberpet Mandal (Jan 2023– Feb 2025)**
+Seasonal Variation
+- Recurring seasonal pattern in wind speeds, with peaks occuring mainly during mid-year months (June–August) — consistent with monsoon or pre-monsoon activity.
+- Lower speeds dominate in winter months (Dec–Feb), indicating calmer atmospheric conditions.
+
+Wind Speed Peaks
+- Notable spikes occur around:
+  - April–August 2023: Max wind speeds reach nearly 70 km/h.
+  - June–August 2024: Another intense period, again reaching around 65–70 km/h.
+- These spikes correspond to strong monsoon winds
+
+Min Wind Speed Trends
+- The minimum wind speeds stay close to 0–5 km/h most of the time.
+- Slight rises in min speeds during May–August months show that even base wind activity increases during monsoon periods.
+  
+Post-Peak Calm
+- After September 2024, both min and max speeds drop and stabilize, showing the end of windy or stormy conditions.
 
 ETS Decomposition Plots
 
