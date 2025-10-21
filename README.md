@@ -45,7 +45,7 @@ It helps save lives by predicting severe weather, supports farmers in planting a
 - Matplotlib
 - Jupyter
 - Scikit learn
-- stats
+- statsmodel
 
 ## Project Description
 The project will entail conduct of the following:
@@ -74,6 +74,71 @@ The datasets used are saved in this repository.
 
 ## Exploratory Data Analysis
 The data was analysed using pandas. Descriptive statistics was used to summarise the numerical variables. Seaborn and matplotlib were used for data visualization. Line plots were used to show the trend of the different weather conditions over time. Histogram and Box plots were used to describe data distribution, data spread and detect outliers.
+
+Distribution of weather variables
+
+Histograms
+
+<img width="1491" height="1025" alt="image" src="https://github.com/user-attachments/assets/02661fe4-f834-4e8f-b291-ab409270d038" />
+
+**1. Rain (mm) - Extreme Right Skew**
+- Massive spike at 0 (most days are dry)
+- Long right tail with rare heavy rainfall events
+- NOT normally distributed despite the overlay curve
+
+**2. Temperatures - Approximately Normal distribution**
+- Min Temp: Slight left skew, but reasonable
+- Max Temp: Nearly perfect normal distribution
+
+**3.Humidity Variables - Different Behaviors**
+- Min Humidity: Roughly normal distribution with slight right skew
+- Max Humidity: Left-skewed (clustered near 100%). Many days hit 100% max humidity (morning dew/fog)
+
+**4.Min Wind Speed - Zero-Inflated models recommended**
+- Extreme concentration at 0 km/h. Essentially useless for prediction
+
+**5.Max Wind Speed - Right Skewed**
+- Most days have low wind (5-15 km/h). Rare extreme wind events (outliers up to 70 km/h)
+
+Box plots
+
+<img width="1490" height="989" alt="image" src="https://github.com/user-attachments/assets/c2777fe9-8890-49af-a5e1-2d0ce611d1eb" />
+
+- Rain (mm) - right-skewed, many outliers—typical of sporadic heavy rainfall.
+- Min Temp (°C)	Narrow IQR (21 - 25 degrees), a few outliers either low temps or high temps, suggesting stable nighttime temperatures.
+- Max Temp (°C)	Wider spread (31 - 36 degrees), possibly seasonal variation or daytime extremes, many outlier temps either low or high temps
+- Min Humidity (%) - many outliers in the higher % range, wide spread
+- Max Humidity (%) - Possibly left-skewed—high humidity is common, but extreme lows are rare, some outliers. wide spread
+- Min Wind Speed (Kmph) - tight distribution, possibly near-zero values, many outliers. 
+- Max Wind Speed (Kmph) - Wider range, many outliers during storms or gusts.(higher speeds). Overall lower peak wind speeds. 
+
+Box plots by month to visualize seasonal variations and outliers
+
+<img width="1390" height="1589" alt="image" src="https://github.com/user-attachments/assets/b448b793-d72b-44ad-9538-ad336c375600" />
+
+**Weather Pattern Insights**
+
+**1. Rain (mm) - Highly Seasonal & Sparse**
+- Monsoon months (Jun-Sep): Heavy rainfall with many outliers. Dry months (Oct-May): Mostly 0 mm (boxes are flat)
+- **Action: Create binary feature is_monsoon and consider zero-inflated models or separate rain/no-rain classification**
+
+**2. Temperature - Clear Seasonal Cycles**
+- Hottest: April-May (pre-monsoon summer). Coolest: December-January (winter). Min Temp range: 14-30°C, Max Temp: 24-43°C
+- **Strong seasonal pattern = good for time-based features**
+
+**3. Humidity - Monsoon Effect**
+- Max Humidity: Consistently high (80-100%) across months. 
+- Min Humidity: Drops significantly in dry months. Jan-May: 20-40%. Jul-Aug: High min humidity due to monsoon.
+- **Clear inverse relationship with temperature**
+
+**4. Wind Speed Issues**
+- **Min Wind Speed:**
+  - Nearly all months show 0 km/h median with extreme outliers, all months.
+  - **Recommendation: Drop feature - it has almost no variance and will not help predictions**
+- **Max Wind Speed:**
+  - July spike is dramatic (15-47 km/h median, up to 70 km/h). 
+  - Monsoon wind storms clearly visible. 
+  - **Many outliers - alot in August. Other months - June, September, November, December**
 
 ## Time Series Exploratory analysis
 ETS decomposition was done on the various time series variables to detect trends, seasonality and residual. 
